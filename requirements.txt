@@ -129,6 +129,7 @@ pyobjc-framework-VideoToolbox==6.2.2
 pyobjc-framework-Vision==6.2.2
 pyobjc-framework-WebKit==6.2.2
 requests==2.24.0
+selenium==3.141.0
 six==1.15.0
 soupsieve==2.0.1
 SpeechRecognition==3.8.1

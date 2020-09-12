@@ -8,6 +8,8 @@ import calendar
 import random
 import re
 import webbrowser
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 import urllib.request  # used to make requests
 import urllib.parse  # used to parse values into the url
 
@@ -84,6 +86,20 @@ while True:
         speak(getTime())
     elif 'date' in command:
         speak(getDate())
+    elif 'open google and search' in command:
+        reg_ex = re.search('open google and search (.*)', command)
+        search_for = command.split("search", 1)[1]
+        url = 'https://www.google.com/'
+        if reg_ex:
+            subgoogle = reg_ex.group(1)
+            url = url + 'r/' + subgoogle
+        speak('Yes sir!')
+        # depends which web browser you are using
+        driver = webdriver.Firefox(executable_path='chromedriver.exe')
+        driver.get('http://www.google.com')
+        search = driver.find_element_by_name('q')  # finds search
+        search.send_keys(str(search_for))  # sends search keys
+        search.send_keys(Keys.RETURN)  # hits enter
     elif 'youtube' in command:
         speak('Yes sir!')
         reg_ex = re.search('youtube (.+)', command)

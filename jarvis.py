@@ -6,6 +6,10 @@ import playsound
 import datetime
 import calendar
 import random
+import re
+import webbrowser
+import urllib.request  # used to make requests
+import urllib.parse  # used to parse values into the url
 
 
 # Plays sound from speakers by using gTTS module to convert text to speech.
@@ -71,18 +75,31 @@ def getTime():
     return 'Currently, it is ' + str(hour) + ': '+minute+' '+meridiem+' .'
 
 
-def jarvis(command):
+while True:
+    command = listen()
 
     if 'hello' in command:
-        speak('Hello! My name is Jarvis, your virtual assistant. How may I help you sir?')
+        speak('Hello Mr.Kang! My name is Jarvis, your virtual assistant. How may I help you sir?')
     elif 'time' in command:
         speak(getTime())
-    elif 'day' or 'date' in command:
+    elif 'date' in command:
         speak(getDate())
+    elif 'youtube' in command:
+        speak('Yes sir!')
+        reg_ex = re.search('youtube (.+)', command)
+        if reg_ex:
+            domain = command.split("youtube", 1)[1]
+            query_string = urllib.parse.urlencode({"search_query": domain})
+            html_content = urllib.request.urlopen(
+                "http://www.youtube.com/results?" + query_string)
+            # finds all links in search result
+            search_results = re.findall(
+                r'href=\"\/watch\?v=(.{11})', html_content.read().decode())
+            webbrowser.open(
+                "http://www.youtube.com/watch?v={}".format(search_results[0]))
+            pass
+    elif 'quit' in command:
+        speak("Goodbye sir.")
+        break
     else:
         speak("I'm sorry, could you repeat that sir?")
-
-
-jarvis(listen())
-# while True:
-#     jarvis(listen())
